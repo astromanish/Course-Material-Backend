@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.2.0",
+    "mongoose": "^5.10.14"
+  },
+  "name": "Course-Material-Backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/astromanish/Course-Material-Backend.git",
+  "author": "K-Kumar01 <kushalkumargupta4@gmail.com>",
+  "license": "MIT"
+}
