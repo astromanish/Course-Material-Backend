@@ -21,6 +21,7 @@ const UserSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       index: true,
+      ref:'College'
     },
   },
   {

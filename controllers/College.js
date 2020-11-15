@@ -38,7 +38,7 @@ const addCollege = async (req, res) => {
       .json({ error: "Unable to add college. Please try again later" });
   }
 
-  return res.status(200).json({ message: "Created college successfully" });
+  return res.status(200).json({ message: "Added college successfully" });
 };
 
 module.exports = { getAllCollegesList, addCollege };
