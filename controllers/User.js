@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const bcrypt = require("bcryptjs");
 
 const getAllUsersList = async (req, res) => {
   let usersList;
@@ -28,11 +29,21 @@ const createUser = async (req, res) => {
     return res.status(409).json({ error: "User with email already exists" });
   }
 
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(req.body.password, 12);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Error in creating you account. Please try again later" });
+  }
+
   const newUser = new User({
     name,
     email,
     age,
     college,
+    password: hashedPassword,
   });
 
   try {

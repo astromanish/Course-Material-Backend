@@ -13,6 +13,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+    password: {
+      type: String,
+      required: true,
+    },
     age: {
       type: String,
       required: true,
@@ -21,7 +25,7 @@ const UserSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       index: true,
-      ref:'College'
+      ref: "College",
     },
   },
   {
