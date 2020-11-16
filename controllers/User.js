@@ -1,10 +1,11 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const authHelpers = require("../helpers/auth");
 
 const getAllUsersList = async (req, res) => {
   let usersList;
   try {
-    usersList = await User.find({}).lean().exec();
+    usersList = await User.find({}).lean().select("-password").exec();
   } catch (error) {
     return res
       .status(500)
@@ -57,4 +58,39 @@ const createUser = async (req, res) => {
   return res.status(200).json({ message: "Created your account succesfully" });
 };
 
-module.exports = { getAllUsersList, createUser };
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email }).lean().exec();
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Server down. Please try again later" });
+  }
+  if (!existingUser) {
+    return res
+      .status(404)
+      .json({ error: "No such user found. Please register yourself" });
+  }
+
+  let validUser;
+  try {
+    validUser = await bcrypt.compare(password, existingUser.password);
+  } catch (error) {
+    return res.status(500).json({ error: "Server error" });
+  }
+  if (!validUser) {
+    return res.status(401).json({ error: "Incorrect password" });
+  }
+
+  let token = authHelpers.createToken({
+    id: existingUser._id,
+    email: existingUser.email,
+    name: existingUser.name,
+  });
+
+  return res.status(200).json({ message: "Logged you in", token });
+};
+
+module.exports = { getAllUsersList, createUser, loginUser };
