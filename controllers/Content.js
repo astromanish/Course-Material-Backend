@@ -9,11 +9,15 @@ const getAllContent = async (req, res) => {
       .status(500)
       .json({ error: "Server error occurred. Please try again later" });
   }
+
+  return res.status(200).json({ content });
 };
 
 const addContent = async (req, res) => {
   let { link, course, degree, branches } = req.body;
-  branches = branches.split(",");
+  try {
+    if (branches) branches = branches.split(",");
+  } catch (error) {}
 
   const newContent = new Content({ link, course, degree, branches });
 
